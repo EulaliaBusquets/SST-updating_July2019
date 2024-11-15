@@ -1,4 +1,4 @@
-7/11/2024
+15/11/2024
 Information and namelists used for WRF July 2019 simulations in Manuscript Busquets et al. 2024:
 
 WRF0 == Without updating SST
