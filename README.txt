@@ -16,31 +16,6 @@ For example:
 
 
 
-Land-sea mask:
-(Applied in both updated and non-updated simulations)
-
--When the WRF model is initialized with ERA5 reanalysis data, the land-sea mask is created by interpolating the model's direct output to the standard 0.25º grid (from the ERA5 API). This mask has non-binary values and, therefore, does not clearly define the coastline.
--A new land-sea mask (called "land_sea_mask" in WRFX_namelist.wps files) has been created using the ERA5 SST field. Where SST is defined, grids are interpreted as "sea"; otherwise, they are interpreted as "land."
--After creating the land_sea_mask, it must be decoded with the Vtable using ungrib.exe. Additionally, in the METGRID.TBL file, it must be specified that SST is interpolated according to the land_sea_mask.
-
-Changes in METGRID.TBL file:
-name=SST
-interp_option=sixteen_pt+four_pt+wt_average_4pt+wt_average_16pt+search
-masked=land
-interp_land_mask = land_sea_mask(1)
-interp_water_mask = land_sea_mask(0)
-missing_value=-1.E30
-fill_missing=0.
-fill_lev=200100:SKINTEMP(200100)
-flag_in_output=FLAG_SST
-========================================
-name=LSM_SST ; output_name=LANDSEA
-========================================
-
-land_sea_mask and used in the simulations is included at the GitHub repostory ("land_sea_mask" file). 
-
-
-
 Sea surface temperature updating:
 - Ungrib.exe in WPS module must be executed twice using two variable tables: Firstly decoding all fields exept SST and LANDSEA (with Vtable.ERA5) and using the prefix "ALL" (see "WRF1_namelist_v1.wps"); secondly, decoding only SST field (Vtable.SST) and using the prefix "SST" (see WRF1_namelist_v2.wps").
 - For metgrid.exe in WPS module, execute it including "ALL" and "SST" prefixes in "fg_name" field (see "WRF1_HW-namelist_v2.wps"). 
